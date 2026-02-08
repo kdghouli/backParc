@@ -1,0 +1,67 @@
+# <IfModule mod_rewrite.c>
+#     <IfModule mod_negotiation.c>
+#         Options -MultiViews -Indexes
+#          # Protection du dossier storage
+#     RewriteRule ^storage/app/.*$ - [F,L]
+#     # Autoriser l'accès uniquement au dossier public
+#     RewriteRule ^storage/app/public/ - [L]
+#     # Empêcher le listing des répertoires
+#     Options -Indexes
+#     </IfModule>
+
+#     RewriteEngine On
+
+#     # Handle Authorization Header
+#     RewriteCond %{HTTP:Authorization} .
+#     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+#     # Redirect Trailing Slashes If Not A Folder...
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteCond %{REQUEST_URI} (.+)/$
+#     RewriteRule ^ %1 [L,R=301]
+
+#     # Send Requests To Front Controller...
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteRule ^ index.php [L]
+# </IfModule>
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Protection des fichiers sensibles
+    <FilesMatch "(^\.|\.(env|gitignore|md|sql|log|lock|json|yml))$">
+        Require all denied
+    </FilesMatch>
+
+    # Protection du dossier storage (hors public)
+    RewriteRule ^storage/app/(?!public/).*$ - [F,L,NC]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Désactivation de l'accès direct aux fichiers .php
+<Files *.php>
+    Require all denied
+</Files>
+
+# Autorisation explicite pour index.php
+<Files index.php>
+    Require all granted
+</Files>
