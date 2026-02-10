@@ -21,7 +21,8 @@ return [
         'http://localhost:4173',
         'http://localhost:3000',
         'http://localhost:5173', // Vite dev server
-        'https://kdghouli.github.io' // Pour GitHub Pages
+        'https://kdghouli.github.io',
+        'http://mmr-2026.atwebpages.com' // Pour GitHub Pages
     ],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
