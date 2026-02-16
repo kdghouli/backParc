@@ -31,8 +31,6 @@ class AgenceController extends Controller
     {
         $agence = Agence::create($request->all());
         return response()->json($agence, 201);
-
-
     }
 
     /**

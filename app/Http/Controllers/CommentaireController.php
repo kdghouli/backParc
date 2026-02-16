@@ -16,15 +16,14 @@ class CommentaireController extends Controller
     public function index()
     {
         try {
-        $commentaires = Commentaire::with(['user', 'vhl','replies' => function($query) {
+            $commentaires = Commentaire::with(['user', 'vhl', 'replies' => function ($query) {
                 $query->with(['user', 'replies']);
             }])
-            ->whereNull('parent_id') // Seulement les commentaires racines
-            ->orderBy('created_at', 'desc')
-            ->get();
+                ->whereNull('parent_id') // Seulement les commentaires racines
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-        return response()->json($commentaires);
-
+            return response()->json($commentaires);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -46,6 +45,9 @@ class CommentaireController extends Controller
             'user_id' => 'required|exists:users,id',
             'statut_id' => 'nullable|exists:statuts,id',
             'parent_id' => 'nullable|exists:commentaires,id',
+            'kilometrage' => 'nullable|numeric'
+
+
         ]);
 
         if ($validator->fails()) {
@@ -81,7 +83,7 @@ class CommentaireController extends Controller
     public function show($id)
     {
         try {
-            $commentaire = Commentaire::with(['user', 'vhl', 'replies' => function($query) {
+            $commentaire = Commentaire::with(['user', 'vhl', 'replies' => function ($query) {
                 $query->with(['user', 'replies']);
             }])
                 ->findOrFail($id);
@@ -175,19 +177,19 @@ class CommentaireController extends Controller
         }
     }
 
- public function getRepliesComment(int $commentId,Request $request){
+    public function getRepliesComment(int $commentId, Request $request)
+    {
         try {
-        $replies = Commentaire::with(['user', 'vhl','statut'])
+            $replies = Commentaire::with(['user', 'vhl', 'statut'])
 
-            ->where( 'parent_id',  $commentId)
-            ->orderBy('created_at', 'desc')
-            ->get();
+                ->where('parent_id',  $commentId)
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-           // $mainComment = Commentaire::with(['user', 'vhl' ])
+            // $mainComment = Commentaire::with(['user', 'vhl' ])
 
 
-        return response()->json($replies);
-
+            return response()->json($replies);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -196,8 +198,4 @@ class CommentaireController extends Controller
             ], 500);
         }
     }
-
-
-
 }
-
