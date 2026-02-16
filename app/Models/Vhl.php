@@ -15,95 +15,97 @@ use App\Models\Kilometrage;
 use App\Models\Utilisateur;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Vhl extends Model
 {
-   use HasFactory;
-
-  // protected $with = ['agence', 'categorie', 'intitule', 'service', 'statuts', 'images', 'kilometrages', 'comments', 'utilisateur'];
-   protected $fillable = [
-      'matricule',
-      'marque',
-      'type',
-      'ww',
-      'chassis',
-      'puissance',
-      'date_mc',
-      'equipement',
-      'observation',
-      'agence_id',
-      'categorie_id',
-      'intitule_id',
-      'service_id',
-      'utilisateur_id',
-      'statut_id'
-   ];
-
-   protected $hidden = [
-
-      'updated_at',
-      'deleted_at'
-
-   ];
+    use HasFactory, SoftDeletes;
 
 
+    // protected $with = ['agence', 'categorie', 'intitule', 'service', 'statuts', 'images', 'kilometrages', 'comments', 'utilisateur'];
+    protected $fillable = [
+        'matricule',
+        'marque',
+        'type',
+        'ww',
+        'chassis',
+        'puissance',
+        'date_mc',
+        'equipement',
+        'observation',
+        'agence_id',
+        'categorie_id',
+        'intitule_id',
+        'service_id',
+        'utilisateur_id',
+        'statut_id'
+    ];
 
-   public function agence()
-   {
+    protected $hidden = [
 
-      return $this->belongsTo(Agence::class);
-   }
+        'updated_at',
+        'deleted_at'
 
-   public function categorie()
-   {
+    ];
 
-      return $this->belongsTo(Categorie::class);
-   }
-   public function intitule()
-   {
 
-      return $this->belongsTo(Intitule::class);
-   }
-   public function service()
-   {
 
-      return $this->belongsTo(Service::class);
-   }
+    public function agence()
+    {
 
-   public function statut()
-   {
-      return $this->belongsTo(Statut::class);
-   }
+        return $this->belongsTo(Agence::class);
+    }
 
-   public function images()
-   {
-      return $this->hasMany(Imagesvhl::class);
-   }
+    public function categorie()
+    {
 
-   public function kilometrages(){
-      return $this->hasMany(Kilometrage::class);
-         }
+        return $this->belongsTo(Categorie::class);
+    }
+    public function intitule()
+    {
 
-    public function comments(){
-            return $this->hasMany(Commentaire::class);
-               }
+        return $this->belongsTo(Intitule::class);
+    }
+    public function service()
+    {
+
+        return $this->belongsTo(Service::class);
+    }
+
+    public function statut()
+    {
+        return $this->belongsTo(Statut::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Imagesvhl::class);
+    }
+
+    public function kilometrages()
+    {
+        return $this->hasMany(Kilometrage::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Commentaire::class);
+    }
 
 
     public function utilisateur()
-   {
+    {
 
-      return $this->belongsTo(Utilisateur::class);
-   }
-   public function statutHistoriques()
-{
-    return $this->hasMany(HistStatut::class);
-}
+        return $this->belongsTo(Utilisateur::class);
+    }
+    public function statutHistoriques()
+    {
+        return $this->hasMany(HistStatut::class);
+    }
 
- public function dailychecks()
-   {
-      return $this->hasMany(DailyCheck::class);
-   }
-
-
+    public function dailychecks()
+    {
+        return $this->hasMany(DailyCheck::class);
+    }
 }

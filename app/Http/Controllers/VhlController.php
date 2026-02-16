@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use is_null;
 use App\Models\Vhl;
 use App\Models\Agence;
 use App\Models\Statut;
@@ -13,10 +12,9 @@ use App\Models\Kilometrage;
 use Illuminate\Http\Request;
 use App\Http\Resources\VhlResource;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CommentResource;
 use App\Http\Resources\RechercheResource;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\CommentaireController;
+
 
 class VhlController extends Controller
 {
@@ -117,12 +115,50 @@ class VhlController extends Controller
             return response()->json(['message' => 'Vhl not found'], 404);
         }
 
-        $vhl->delete();
+        $vhl->delete(); // This will now soft delete if SoftDeletes trait is used in Vhl model
         return response()->json(['message' => 'Vhl deleted successfully']);
     }
 
+    /**
+     * Permanently remove the specified resource from storage.
+     */
+    public function forceDestroy(string $id)
+    {
+        $vhl = Vhl::withTrashed()->find($id);
+        if (is_null($vhl)) {
+            return response()->json(['message' => 'Vhl not found'], 404);
+        }
 
+        $vhl->forceDelete();
+        return response()->json(['message' => 'Vhl permanently deleted successfully']);
+    }
 
+    /**
+     * Restore the specified resource from soft deletion.
+     */
+    public function restore(string $id)
+    {
+        $vhl = Vhl::withTrashed()->find($id);
+        if (is_null($vhl)) {
+            return response()->json(['message' => 'Vhl not found'], 404);
+        }
+
+        if ($vhl->trashed()) {
+            $vhl->restore();
+            return response()->json(['message' => 'Vhl restored successfully']);
+        } else {
+            return response()->json(['message' => 'Vhl is not deleted'], 400);
+        }
+    }
+
+    /**
+     * Get all soft deleted resources.
+     */
+    public function trashed()
+    {
+        $vhls = Vhl::onlyTrashed()->get();
+        return response()->json($vhls);
+    }
 
     public function showVhlRes(string $id)
     {
@@ -315,6 +351,13 @@ class VhlController extends Controller
     public function indexPages()
     {
         $vhls = Vhl::paginate(15);
+        return response()->json($vhls);
+    }
+
+    // Method to get both active and trashed records
+    public function getAllWithTrashed()
+    {
+        $vhls = Vhl::withTrashed()->paginate(15);
         return response()->json($vhls);
     }
 }

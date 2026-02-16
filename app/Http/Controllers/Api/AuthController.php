@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -42,135 +41,125 @@ class AuthController extends Controller
         ]);
     }
 
-public function login(Request $request,User $user){
+    public function login(Request $request, User $user)
+    {
 
-    $validator = Validator::make($request->all(), [
-        'email'     => 'required|string|max:255',
-        'password'  => 'required|string'
-      ]);
-if ($validator->fails()) {
-return response()->json($validator->errors());
-}
+        $validator = Validator::make($request->all(), [
+            'email'     => 'required|string|max:255',
+            'password'  => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
 
-$credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-if (! Auth::attempt($credentials)) {
-    return response()->json([
-        'message' => 'User not found'
-    ], 401);
-}
-
-
-$user   = User::where('email', $request->email)->firstOrFail();
-$token  = $user->createToken('auth_token')->plainTextToken;
-
-return response()->json([
-    'message'       => 'Login success',
-    'access_token'  => $token,
-    'token_type'    => 'Bearer',
-    'user' => $user
-]);
+        if (! Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 401);
+        }
 
 
+        $user   = User::where('email', $request->email)->firstOrFail();
+        $token  = $user->createToken('auth_token')->plainTextToken;
 
-
-
-}
-
-
-
-
-
-
-
-
-public function logout(){
-
-    $user = Auth::guard('sanctum')->user();
-
-    if (!$user) {
-        return response()->json(['error' => 'Unauthenticated'], 401);
+        return response()->json([
+            'message'       => 'Login success',
+            'access_token'  => $token,
+            'token_type'    => 'Bearer',
+            'user' => $user
+        ]);
     }
 
-    try {
-        // Revoke all tokens for the authenticated user
-        $user->currentAccessToken()->delete();
-    } catch (\Exception $e) {
-        // Log the exception for investigation
-        \Illuminate\Support\Facades\Log::error('Token revocation failed: ' . $e->getMessage());
 
-        return response()->json(['error' => 'Unable to revoke tokens'], 500);
+
+
+
+
+
+
+    public function logout()
+    {
+
+        $user = Auth::guard('sanctum')->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+
+        try {
+            // Revoke all tokens for the authenticated user
+            $user->currentAccessToken()->delete();
+        } catch (\Exception $e) {
+            // Log the exception for investigation
+            \Illuminate\Support\Facades\Log::error('Token revocation failed: ' . $e->getMessage());
+
+            return response()->json(['error' => 'Unable to revoke tokens'], 500);
+        }
+
+        return response()->json(['message' => 'Tokens revoked successfully']);
     }
 
-    return response()->json(['message' => 'Tokens revoked successfully']);
-}
 
 
+    public function getUsers()
+    {
 
-public function getUsers(){
+        $users   = User::all();
 
-    $users   = User::all();
-
-return $users;
-
-
-
-
-}
-// Mettre à jour le profil de l'utilisateur
-public function updateProfile(Request $request)
-{
-   // Valider les données de la requête
-   $request->validate([
-    'name' => 'nullable|string|max:255',
-    'email' => 'required|email|max:255',
-    'password' => 'nullable|string|min:8',
-    'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000', // 10MB max
-]);
-
-// Récupérer l'utilisateur actuel
-$user = User::where('email', $request->email)->first();
-
-if (!$user) {
-    return response()->json(['message' => 'Utilisateur non trouvé'], 404);
-}
-
-// Mettre à jour les informations de l'utilisateur
-if ($request->has('name')) {
-    $user->name = $request->name;
-}
-
-if ($request->has('password')) {
-    $user->password = Hash::make($request->password);
-}
-
-// Gérer l'image de profil
-if ($request->hasFile('image')) {
-    // Supprimer l'ancienne image si elle existe
-    if ($user->image) {
-        Storage::disk('public')->delete($user->image);
+        return $users;
     }
+    // Mettre à jour le profil de l'utilisateur
+    public function updateProfile(Request $request)
+    {
+        // Valider les données de la requête
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'required|email|max:255',
+            'password' => 'nullable|string|min:8',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000', // 10MB max
+        ]);
 
-    // Stocker la nouvelle image
-    $path = $request->file('image')->store('profile_images', 'public');
-    $user->image = $path;
-}
+        // Récupérer l'utilisateur actuel
+        $user = User::where('email', $request->email)->first();
 
-// Sauvegarder les modifications
-$user->save();
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
 
-// Retourner l'URL complète de l'image
-$user->image_url = $user->image ? asset("storage/{$user->image}") : null;
+        // Mettre à jour les informations de l'utilisateur
+        if ($request->has('name')) {
+            $user->name = $request->name;
+        }
 
-return response()->json([
-    'message' => 'Profil mis à jour avec succès',
-    'user' => $user,
-], 200);
-}
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->password);
+        }
 
+        // Gérer l'image de profil
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image si elle existe
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
 
+            // Stocker la nouvelle image
+            $path = $request->file('image')->store('profile_images', 'public');
+            $user->image = $path;
+        }
 
+        // Sauvegarder les modifications
+        $user->save();
 
+        // Retourner l'URL complète de l'image
+        $user->image_url = $user->image ? asset("storage/{$user->image}") : null;
+
+        return response()->json([
+            'message' => 'Profil mis à jour avec succès',
+            'user' => $user,
+        ], 200);
+    }
 }
 
 
