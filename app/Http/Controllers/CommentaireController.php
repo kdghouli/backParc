@@ -45,7 +45,7 @@ class CommentaireController extends Controller
             'user_id' => 'required|exists:users,id',
             'statut_id' => 'nullable|exists:statuts,id',
             'parent_id' => 'nullable|exists:commentaires,id',
-            'kilometrage' => 'nullable|numeric'
+            'kilometrage' => 'nullable|string|max:255',
 
 
         ]);
@@ -61,7 +61,7 @@ class CommentaireController extends Controller
             $comment = Commentaire::create($request->all());
 
             // Charger les relations pour la réponse
-            $comment->load(['user', 'vhl']);
+            $comment->load(['user', 'vhl', 'statut']);
 
             return response()->json([
 
