@@ -11,6 +11,8 @@ use App\Http\Controllers\StatutVhlController;
 use App\Http\Controllers\DailyCheckController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\TaskController;
+
 
 
 
@@ -127,3 +129,37 @@ Route::get('/stat', [StatutVhlController::class, 'getListStatut']);
 Route::apiResource('comments', CommentaireController::class);
 Route::get('/replies/{commentId}', [CommentaireController::class, 'getRepliesComment']);
 Route::get('/vhls/{vhl}/comments', [VhlController::class, 'getCommentsVhl']);
+
+
+
+
+
+
+
+
+    // Routes CRUD pour les tâches
+    Route::apiResource('tasks', TaskController::class);
+
+    // Routes personnalisées
+    Route::patch('tasks/{task}/status', [TaskController::class, 'updateStatus']);
+    Route::get('statistics/tasks', [TaskController::class, 'statistics']);
+
+    // });
+
+    // Route de test pour vérifier que l'API fonctionne
+    Route::get('test', function () {
+        return response()->json([
+            'status' => 'healthy',
+            'timestamp' => now()->toISOString()
+        ]);
+    });
+
+
+// Route par défaut pour l'API
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Task Manager API',
+        'version' => '1.0.0',
+        'documentation' => url('/api/documentation')
+    ]);
+});
