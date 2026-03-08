@@ -1,4 +1,4 @@
-
+{{--
 
 
 <!-- resources/views/dailychecks/index.blade.php -->
@@ -117,7 +117,7 @@
                                        class="btn btn-info btn-sm" title="Voir">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('dailychecks.edit', $check->id)"
+                                    <a href="{{ route('dailychecks.edit', $check->id)}}"
                                        class="btn btn-warning btn-sm" title="Modifier">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -169,4 +169,4 @@
         }
     });
 </script>
-@endsection
+@endsection --}}

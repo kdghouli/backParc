@@ -10,6 +10,8 @@ use App\Models\Task;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+
+
 class TaskController extends Controller
 {
     protected TaskService $taskService;
@@ -27,7 +29,6 @@ class TaskController extends Controller
 
 
     {
-
         $filters = $request->only(['status', 'priority', 'urgence']);
         $tasks = $this->taskService->getAllTasks($filters);
 

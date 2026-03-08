@@ -6,6 +6,25 @@ use App\Models\Vhl;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property int $id
+ * @property string|null $imagevhl
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $vhl_id
+ * @property-read mixed $imagevhl_url
+ * @property-read mixed $remote_url
+ * @property-read Vhl $vhl
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Imagesvhl newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Imagesvhl newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Imagesvhl query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Imagesvhl whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Imagesvhl whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Imagesvhl whereImagevhl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Imagesvhl whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Imagesvhl whereVhlId($value)
+ * @mixin \Eloquent
+ */
 class Imagesvhl extends Model
 {
     //protected $with = ['vhl'];

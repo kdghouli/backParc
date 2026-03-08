@@ -28,6 +28,9 @@ class TaskRequest extends FormRequest
             'priority' => ['required', Rule::in(['low', 'medium', 'high', 'critical'])],
             'status' => ['required', Rule::in(['open', 'in_progress', 'closed'])],
             'urgence' => ['required', Rule::in(['low', 'medium', 'urgent'])],
+            'user_id' => 'nullable|exists:users,id',
+
+
         ];
 
         // Règles spécifiques pour la mise à jour

@@ -179,10 +179,10 @@ return [
         'laravel'         => true, // Laravel version and environment
         'events'          => false, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
-        'logs'            => false, // Add the latest log messages
+        'logs'            => true, // Add the latest log messages
         'files'           => false, // Show the included files
         'config'          => false, // Display config settings
-        'cache'           => false, // Display cache events
+        'cache'           => true, // Display cache events
         'models'          => true,  // Display models
         'livewire'        => true,  // Display Livewire (when available)
         'jobs'            => false, // Display dispatched jobs
@@ -218,7 +218,7 @@ return [
         'db' => [
             'with_params'       => true,   // Render SQL with the parameters substituted
             'exclude_paths'     => [       // Paths to exclude entirely from the collector
-//                'vendor/laravel/framework/src/Illuminate/Session', // Exclude sessions queries
+                //                'vendor/laravel/framework/src/Illuminate/Session', // Exclude sessions queries
             ],
             'backtrace'         => true,   // Use a backtrace to find the origin of the query in your files.
             'backtrace_exclude_paths' => [],   // Paths to exclude from backtrace. (in addition to defaults)

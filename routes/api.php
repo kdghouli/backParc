@@ -12,7 +12,7 @@ use App\Http\Controllers\DailyCheckController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TaskController;
-
+use App\Http\Controllers\Admin\ImportExportController;
 
 
 
@@ -83,6 +83,7 @@ Route::apiResource('agences', App\Http\Controllers\AgenceController::class);
 Route::get('/dropdowns', [VhlController::class, 'getDropDownbutonVhl']);
 Route::get('/getagences', [VhlController::class, 'getAgences']);
 
+
 //? Services
 Route::apiResource('services', ServiceController::class);
 
@@ -137,29 +138,21 @@ Route::get('/vhls/{vhl}/comments', [VhlController::class, 'getCommentsVhl']);
 
 
 
-    // Routes CRUD pour les tâches
-    Route::apiResource('tasks', TaskController::class);
+// Routes CRUD pour les tâches
+Route::apiResource('tasks', TaskController::class);
 
-    // Routes personnalisées
-    Route::patch('tasks/{task}/status', [TaskController::class, 'updateStatus']);
-    Route::get('statistics/tasks', [TaskController::class, 'statistics']);
+// Routes personnalisées
+Route::patch('tasks/{task}/status', [TaskController::class, 'updateStatus']);
+Route::get('statistics/tasks', [TaskController::class, 'statistics']);
 
-    // });
+// });
 
-    // Route de test pour vérifier que l'API fonctionne
-    Route::get('test', function () {
-        return response()->json([
-            'status' => 'healthy',
-            'timestamp' => now()->toISOString()
-        ]);
-    });
-
-
-// Route par défaut pour l'API
-Route::get('/', function () {
+// Route de test pour vérifier que l'API fonctionne
+Route::get('test', function () {
     return response()->json([
-        'message' => 'Task Manager API',
-        'version' => '1.0.0',
-        'documentation' => url('/api/documentation')
+        'status' => 'healthy',
+        'timestamp' => now()->toISOString()
     ]);
 });
+
+Route::post('/export/users', [ImportExportController::class, 'exportUsers']);

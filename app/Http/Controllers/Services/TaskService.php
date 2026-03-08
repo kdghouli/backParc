@@ -68,6 +68,7 @@ class TaskService
     public function createTask(array $data): Task
     {
         // Ajouter l'utilisateur connecté si nécessaire
+
         if (auth()->guard()->check()) {
             $data['user_id'] = auth()->guard()->id();
         }

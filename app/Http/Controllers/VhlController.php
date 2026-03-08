@@ -14,6 +14,7 @@ use App\Http\Resources\VhlResource;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RechercheResource;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class VhlController extends Controller
@@ -359,5 +360,42 @@ class VhlController extends Controller
     {
         $vhls = Vhl::withTrashed()->paginate(15);
         return response()->json($vhls);
+    }
+
+    public function downloado()
+
+
+
+    {
+        $data = [
+            [
+                'quantity' => 1,
+                'description' => '1 Year Subscription',
+                'price' => '129.00'
+            ]
+        ];
+        $pdf = Pdf::loadView('pdf.pdfTest', ['data' => $data]);
+        $pdf->setOption('enable-css', true);
+        $pdf->setOption('enable-remote', true);
+        $pdf->setOption('enable-javascript', true);
+        $pdf->setOption('margin', [
+            'top' => 100,
+            'bottom' => 100,
+            'left' => 100,
+            'right' => 100
+        ]);
+        $pdf->setOption('page-size', 'A4');
+
+        $pdf->setOption('footer-right', '[page]');
+            $pdf->setOption('footer-left', '[date]');
+                $pdf->setOption('footer-center', '[title]');
+
+        return $pdf->stream();
+    }
+
+    public function testPDF()
+    {
+        $pdf = Pdf::loadHTML('<h1>Hello World</h1><p>Test PDF</p>');
+        return $pdf->download('test.pdf');
     }
 }

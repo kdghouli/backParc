@@ -6,6 +6,46 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property string $priority
+ * @property string $status
+ * @property string $urgence
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $user_id
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read string $formatted_created_at
+ * @property-read string $formatted_updated_at
+ * @property-read string $priority_color
+ * @property-read string $status_color
+ * @property-read string $urgence_color
+ * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task priority($priority)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task recent($days = 7)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task search($search)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task status($status)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task urgence($urgence)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task wherePriority($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereUrgence($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Task extends Model
 {
     use HasFactory, SoftDeletes;
