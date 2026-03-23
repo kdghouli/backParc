@@ -156,3 +156,5 @@ Route::get('test', function () {
 });
 
 Route::post('/export-users', [ImportExportController::class, 'exportUsers']);
+
+Route::view('/email', 'email.createlogin');
