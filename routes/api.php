@@ -19,17 +19,17 @@ use App\Http\Controllers\Admin\ImportExportController;
 
 
 
-//? Authentification
+//? ------------------------------------------------------------------------------         Authentification
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', [App\Http\Controllers\Api\AuthController::class, 'register']);
-Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
-Route::get('/getusers', [App\Http\Controllers\Api\AuthController::class, 'getUsers']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/getusers', [AuthController::class, 'getUsers']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::post('/update-profile', [AuthController::class, 'updateProfile']);
@@ -41,11 +41,13 @@ Route::post('/update-profile', [AuthController::class, 'updateProfile']);
 // Route::get('/vhl',[App\Http\Controllers\VhlController::class, 'index']);
 // Route::post('/vhlcreate',[App\Http\Controllers\VhlController::class, 'store']);
 
-//? Images
+
+
+//? ----------------------------------------------------------------------------------------------- Images
 Route::post('/vhls/upload-images', [ImagesvhlController::class, 'uploadImages']);
 Route::get('/vhls/{vhlId}/images', [ImagesvhlController::class, 'getImages']);
 
-//? VHL
+//? -----------------------------------------------------------------------------------------------    VHL
 
 Route::apiResource('/vhls', VhlController::class);
 Route::get('/vhl/{vhlId}', [VhlController::class, 'showVhlRes']);
@@ -54,7 +56,7 @@ Route::get('/vhlspages', [VhlController::class, 'indexPages']);
 
 
 
-//? Status
+//? ----------------------------------------------------------------------------------------------- Status
 
 Route::get('/statut/{statutId}', [StatutController::class, 'show']);
 Route::get('/statuts', [StatutController::class, 'index']);
@@ -63,28 +65,28 @@ Route::apiResource('statuts', StatutController::class);
 
 
 
-//? Kilometrage
+//? ----------------------------------------------------------------------------------------------- Kilometrage
 Route::get('/km/{vhlId}', [VhlController::class, 'getKmByVhl']);
 
 
 
-//? Categorie
+//? ---------------------------------------------------------------------------------------------------- Categorie
 Route::get('/categ/vhls/{categorieId}', [CategorieController::class, 'getVhlsByCategorie']);
 Route::apiResource('categories', CategorieController::class);
 
 
-//? Agences
+//? ----------------------------------------------------------------------------------------------- Agences
 Route::get('/agencesi', [App\Http\Controllers\AgenceController::class, 'getVhlsByAgence']);
 Route::apiResource('agences', App\Http\Controllers\AgenceController::class);
 
 
 
-//? Dropdown-Creation véhicule
+//? ----------------------------------------------------------------------------------------------- Dropdown-Creation véhicule
 Route::get('/dropdowns', [VhlController::class, 'getDropDownbutonVhl']);
 Route::get('/getagences', [VhlController::class, 'getAgences']);
 
 
-//? Services
+//? ----------------------------------------------------------------------------------------------- Services
 Route::apiResource('services', ServiceController::class);
 
 
@@ -92,20 +94,25 @@ Route::apiResource('services', ServiceController::class);
 
 
 
-//? Utilisateurs
+//? ----------------------------------------------------------------------------------------------- Utilisateurs
 Route::apiResource('utilisateurs', App\Http\Controllers\UtilisateurController::class);
 
-//? Intitules
+//? ----------------------------------------------------------------------------------------------- Intitules
 Route::apiResource('intitules', App\Http\Controllers\IntituleController::class);
 
-//? recherche findVhlByMatricule
+//? ----------------------------------------------------------------------------------------------- recherche
 Route::get('/search', [VhlController::class, 'searchVhls']);
+
+
+//? ----------------------------------------------------------------------------------------------- Exportation
 
 Route::get('/pdf', [DailyCheckController::class, 'generatePdf']);
 Route::get('/excel', [DailyCheckController::class, 'exportUsers']);
 Route::get('/main', [DailyCheckController::class, 'ExportBlade']);
+Route::post('/export-users', [ImportExportController::class, 'exportUsers']);
 
-//? Daily Checks
+
+//? ----------------------------------------------------------------------------------------------- Daily Checks
 Route::prefix('dailychecks')->group(function () {
     Route::get('/', [DailyCheckController::class, 'index']);
     Route::post('/', [DailyCheckController::class, 'store']);
@@ -124,7 +131,7 @@ Route::prefix('dailychecks')->group(function () {
 
 
 
-//? Commentaires
+//? ----------------------------------------------------------------------------------------------- Commentaires
 
 Route::get('/stat', [StatutVhlController::class, 'getListStatut']);
 Route::apiResource('comments', CommentaireController::class);
@@ -145,7 +152,7 @@ Route::apiResource('tasks', TaskController::class);
 Route::patch('tasks/{task}/status', [TaskController::class, 'updateStatus']);
 Route::get('statistics/tasks', [TaskController::class, 'statistics']);
 
-// });
+
 
 // Route de test pour vérifier que l'API fonctionne
 Route::get('test', function () {
@@ -155,6 +162,6 @@ Route::get('test', function () {
     ]);
 });
 
-Route::post('/export-users', [ImportExportController::class, 'exportUsers']);
 
+//? --------------------------------------------------------------------------    Mail
 Route::view('/email', 'email.createlogin');

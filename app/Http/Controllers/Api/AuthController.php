@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 
+
+
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -47,11 +49,11 @@ class AuthController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'email'     => 'required|string|max:255',
+            'email'     => 'required|string|email|max:255',
             'password'  => 'required|string'
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(),422);
         }
 
         $credentials = $request->only('email', 'password');

@@ -8,13 +8,6 @@ use App\Http\Controllers\VhlController;
 
 
 
-Route::get('/main', function () {
-    return view('main');
-});
-
-
-
-
 
 
 // Routes d'export
@@ -25,13 +18,15 @@ Route::get('/generate-pdf', [VhlController::class, 'downloado']);
 
 Route::get('/maino', function () {
     return view('pdf.pdfTest', [
-        'data' => [[
+        'data' => [
+            [
                 'quantity' => 1,
                 'description' => '1 Year Subscription',
                 'price' => 129.00
-        ],
+            ],
 
-    ]]);
+        ]
+    ]);
 });
 
 
