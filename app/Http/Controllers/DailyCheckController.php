@@ -301,7 +301,7 @@ class DailyCheckController extends Controller
                 MONTH(dateControle) as month,
                 COUNT(*) as count,
                 AVG(CASE WHEN frein = 1 AND pneus = 1 AND eclairage = 1 AND extincteur = 1
-                         AND batterie = 1 AND fuite = 0 AND avertisseur = 1
+                        AND batterie = 1 AND fuite = 0 AND avertisseur = 1
                          AND ceinture = 1 AND retroviseur = 1 THEN 1 ELSE 0 END) * 100 as percentage_ok
             ')
             ->whereYear('dateControle', $year)
@@ -512,4 +512,6 @@ class DailyCheckController extends Controller
             'vehicles' => $vehicles
         ]);
     }
+
+
 }
